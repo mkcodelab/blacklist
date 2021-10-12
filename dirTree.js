@@ -2,7 +2,7 @@
 
 // "type": "module" insert that in package.json if using fetch
 
-const path = 'C:/kody/10.2021';
+const path = 'D:/mp3';
 
 const fs = require('fs');
 const dirTree = require('directory-tree');
