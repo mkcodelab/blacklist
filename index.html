@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Czarnego Muzyki Lista</title>
+  <style>
+    *, *:before, *:after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html {
+      font-size: 10px;
+    }
+    body, .list {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    body {
+      background: #333;
+      font-family: helvetica;
+      color: white;
+      flex-direction: column;
+    
+    }
+    .list {
+      padding: 1.5em;
+      /* border: 5px solid #777; */
+      
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* title */
+    .title {
+      color: skyblue;
+      font-size: 3em;
+      text-shadow: 5px 5px 10px rgba(0,0,0,.2);
+      width: 100%;
+      text-align: center;
+      padding: .5em;
+      background: #333;
+    }
+    
+    .subfolder {
+      
+      margin-top: .4rem;
+      padding-top: .5em;
+      padding-left: 1em;
+      display: flex;
+      flex-direction: column;
+      min-width: 60%;
+      max-height: 100vh;
+      transition: max-height .5s ease;
+      background: none;
+      
+    }
+ 
+    /* for hiding elements */
+    .collapsed {
+      /* display: none; */
+      max-height: 0;
+      /* transform: scaleY(0); */
+      overflow: hidden;
+    }
+
+    .folder-marker {
+      
+      padding: 4px;
+      height: 30px;
+
+      position: relative;
+      
+      top: 0;
+      left: 0;
+      background: #222;
+    }
+
+    /* collapse button */
+    .collapse {
+      width: 20px;
+      height: 20px;
+      background: #555;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+    
+    .path {
+      color: #ada;
+      font-size: .9em;
+      font-weight: bolder;
+    }
+    .filename {
+      color: #6f6;
+      font-size: 1.3em;
+    }
+    .break-line {
+      background-color: red;
+      width: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 class="title">Czarnego Przebojów Lista</h1>
+  <nav>
+    <button class="btn" id="load">Wczytaj</button>
+  </nav>
+  <div class="list">
+    <!-- here goes the list of files... hopefully -->
+  </div>
+  
+
+  <script src="readJson.js"></script>
+</body>
+</html>
