@@ -4,8 +4,8 @@ const loadBtn = document.querySelector('#load');
 let readyList;
 
 // change to url of json file on server
-// const path = 'files.json';
-const path = 'http://mkcodelab.pl/blacklist/files.json';
+const path = 'files.json';
+// const path = 'http://mkcodelab.pl/blacklist/files.json';
 
 const list = fetch(path, {
   method: 'GET',
@@ -18,17 +18,10 @@ const list = fetch(path, {
   
 const print = function( obj, maxLevel, level )
 {
-    if ( typeof level == "undefined" ) level = 0;
-    if ( typeof maxlevel == "undefined" ) maxLevel = 0;
+    // if ( typeof level == "undefined" ) level = 0;
+    // if ( typeof maxlevel == "undefined" ) maxLevel = 0;
 
     let str = '';
-    let levelStr = '<br>'; 
-
-    // if ( maxLevel != 0 && level >= maxLevel )
-    // {
-    //     str += `<div class="break-line"></div>`; // breaking the line
-    //     return str;
-    // }
 
     for ( let prop in obj )
     {
@@ -39,9 +32,12 @@ const print = function( obj, maxLevel, level )
           case 'boolean':
             
           // name property
+          
             if (prop =='name') {
               str += `<div class="filename">${obj[prop]}</div>`;
             }
+          
+            
            
             break;
 
@@ -50,17 +46,18 @@ const print = function( obj, maxLevel, level )
             
               if (obj[prop].hasOwnProperty('children')) {
                 str += `<div class="folder-marker">
-                <button class="collapse">-</button>
-                Folder: ${obj[prop].path}
-                </div>`;
+                          <button class="collapse-btn">+</button>
+                          ${obj[prop].name}
+                        </div>`;
               }
+             
               // if (!obj[prop].name.includes('.')) {
               //   console.log('folder')
               // }
 
               str += `
-              <div class="subfolder ">
-                ${print(obj[prop], maxLevel, level + 1 )} 
+              <div class="subfolder">
+                ${print(obj[prop], maxLevel, level + 1 )}
               </div>`;
             
             break;
@@ -70,86 +67,60 @@ const print = function( obj, maxLevel, level )
     return str;
 };
 
+// this is soooo messed up...
 
 function collapseChild(elem) {
-  // console.log(elem.target.parentNode.parentNode);
-  elem.target.parentElement.nextSibling.nextSibling.classList.toggle('collapsed')
 
+  const subfolder = elem.target.parentNode.nextSibling.nextSibling;
+  const children = subfolder.childNodes;
+
+
+  if (subfolder.classList.contains('collapsed')) {
+    subfolder.classList.remove('collapsed');
+
+
+  } else {
+    subfolder.classList.add('collapsed');
+
+  }
+
+  children.forEach(child => {
+    if (child.nodeType == 1) {
+      child.classList.remove('collapsed');
+      let childrenOfChild = child.childNodes;
+      childrenOfChild.forEach(child => {
+        if (child.nodeType == 1) child.classList.remove('collapsed');
+      })
+    }
+  })
+
+  //  switching the symbol on the button
   if (elem.target.parentElement.nextSibling.nextSibling.classList.contains('collapsed')) {
     elem.target.innerHTML = '+';
   } else {
     elem.target.innerHTML = '-';
   }
-  // console.log(elem.target.parentElement.nextSibling.nextSibling)
+ 
 }
 
+// adding event listener to all collapse buttons
 function addCollapse() {
-  const collapseBtns = document.querySelectorAll('.collapse');
+  const collapseBtns = document.querySelectorAll('.collapse-btn');
   collapseBtns.forEach(btn => btn.addEventListener('click', (btn)=> {
     collapseChild(btn)
   }));
 }
 
+// load button trigger
 loadBtn.addEventListener('click', () => {
     listEl.innerHTML += `${print(readyList)}`
     loadBtn.style.display = 'none';
     addCollapse();
+
+    // make all subfolders display none
+    let subfolders = document.querySelectorAll('.subfolder');
+    subfolders.forEach( e => e.classList.toggle('collapsed'));
+    // first folder visible
+    document.querySelector('.subfolder').classList.remove('collapsed')
   }
 );
-//orginal version of the print function
-// var print = function( o, maxLevel, level )
-// {
-//     if ( typeof level == "undefined" )
-//     {
-//         level = 0;
-//     }
-//     if ( typeof maxlevel == "undefined" )
-//     {
-//         maxLevel = 0;
-//     }
-
-//     var str = '';
-//     // Remove this if you don't want the pre tag, but make sure to remove
-//     // the close pre tag on the bottom as well
-//     if ( level == 0 )
-//     {
-//         str = '<pre>';   // can also be <pre>
-//     }
-
-//     var levelStr = '<br>';
-//     for ( var x = 0; x < level; x++ )
-//     {
-//         levelStr += '    ';   // all those spaces only work with <pre>
-//     }
-
-//     if ( maxLevel != 0 && level >= maxLevel )
-//     {
-//         str += levelStr + '...<br>';
-//         return str;
-//     }
-
-//     for ( var p in o )
-//     {
-//         switch(typeof o[p])
-//         {
-//           case 'string':
-//           case 'number':    // .tostring() gets automatically applied
-//           case 'boolean':   // ditto
-//             str += levelStr + p + ': ' + o[p] + ' <br>';
-//             break;
-
-//           case 'object':    // this is where we become recursive
-//           default:
-//             str += levelStr + p + ': [ <br>' + print( o[p], maxLevel, level + 1 ) + levelStr + ']</br>';
-//             break;
-//         }
-//     }
-
-//     // Remove this if you don't want the pre tag, but make sure to remove
-//     // the open pre tag on the top as well
-//     if ( level == 0 )
-//     {
-//         str += '</pre>';   // also can be </pre>
-//     }
-//     return str;
-// };

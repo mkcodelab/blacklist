@@ -54,34 +54,29 @@
       display: flex;
       flex-direction: column;
       min-width: 60%;
-      max-height: 100vh;
-      transition: max-height .5s ease;
       background: none;
-      
     }
+    
  
     /* for hiding elements */
+    .opened {
+      display: flex;
+    }
     .collapsed {
-      /* display: none; */
-      max-height: 0;
-      /* transform: scaleY(0); */
-      overflow: hidden;
+      display: none;
     }
 
     .folder-marker {
-      
       padding: 4px;
       height: 30px;
-
       position: relative;
-      
       top: 0;
       left: 0;
       background: #222;
     }
 
     /* collapse button */
-    .collapse {
+    .collapse-btn {
       width: 20px;
       height: 20px;
       background: #555;
